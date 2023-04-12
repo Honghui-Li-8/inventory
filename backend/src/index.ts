@@ -1,16 +1,16 @@
-import express, { Express, IRouterMatcher } from 'express';
-import { test_route } from './routes/test';
-import { routes } from './routes/route';
+import express, { Express, IRouterMatcher } from "express";
+import { test_route } from "./routes/test";
+import { routes } from "./routes/route";
 
 const app: Express = express();
-app.use(express.json())
+app.use(express.json());
 const port = 8080;
 
-for(const route of routes) {
+for (const route of routes) {
 	const handler = route.handler;
 	const url = route.route;
 
-	switch(route.method) {
+	switch (route.method) {
 		case "get":
 			app.get(url, handler);
 			break;

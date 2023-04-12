@@ -6,7 +6,6 @@ export const test_route: Route = {
 	method: "post",
 	handler: (req, res) => {
 		let user: User = req.body;
-		console.log(user);
 		res.send(`Hello, ${user.fname} ${user.lname}`);
 	},
 };

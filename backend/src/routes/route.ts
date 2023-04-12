@@ -1,5 +1,12 @@
 import { Request, Response } from "express";
+import { test_route } from "./test";
 
 export interface Route {
-    (req: Request, res: Response): void;
+    route: string,
+    method: "get" | "post" | "put" | "delete",
+    handler: (req: Request, res: Response) => void,
 }
+
+export const routes = [
+    test_route
+]

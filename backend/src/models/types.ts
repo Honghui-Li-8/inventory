@@ -20,6 +20,7 @@ export interface Item {
 }
 
 export interface Household {
+	name: string;
 	uid: string;
 	owner: string;
 	inventory: string; // inventory id

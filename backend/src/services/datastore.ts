@@ -1,6 +1,5 @@
 import { Datastore } from "@google-cloud/datastore";
 import { User } from "../models/types";
-import { error } from "console";
 
 export class DataStoreService {
 	private datastore: Datastore;

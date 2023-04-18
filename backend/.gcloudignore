@@ -12,6 +12,9 @@
 # below:
 .git
 .gitignore
+.prettierignore
+.prettierrc
+dist/
 
 # Node.js dependencies:
 node_modules/

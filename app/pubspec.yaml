@@ -7,8 +7,14 @@ environment:
   sdk: '>=2.19.6 <3.0.0'
 
 dependencies:
+  firebase_auth: ^4.4.1
+  firebase_core: ^2.9.0
+  firebase_storage: ^11.1.1
   flutter:
     sdk: flutter
+  http: ^0.13.5
+  image_cropper: ^3.0.2
+  image_picker: ^0.8.7+3
   json_annotation: ^4.8.0
 
 dev_dependencies:

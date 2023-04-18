@@ -6,7 +6,7 @@ export const get_all_users: Route = {
 	route: "/users",
 	method: "get",
 	async handler(req, res) {
-		const users = await DataStoreService.getInstance().getUsers();
+		const users = await DataStoreService.instance.getUsers();
 		res.json(users).status(200).send();
 	},
 };
@@ -16,7 +16,7 @@ export const get_user: Route = {
 	method: "get",
 	async handler(req, res) {
 		try {
-			const user = await DataStoreService.getInstance().getUser(req.params.uid);
+			const user = await DataStoreService.instance.getUser(req.params.uid);
 			res.json(user).status(200).send();
 		} catch (e) {
 			res.status(404).json({ error: "could not find user" }).send();
@@ -30,7 +30,7 @@ export const create_user: Route = {
 	async handler(req, res) {
 		let userData: User = req.body;
 		try {
-			await DataStoreService.getInstance().createUser(userData);
+			await DataStoreService.instance.createUser(userData);
 			res.status(201).send();
 		} catch (e) {
 			res.json({ error: e }).status(500).send();

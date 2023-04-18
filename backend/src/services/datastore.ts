@@ -3,18 +3,22 @@ import { User } from "../models/types";
 
 export class DataStoreService {
 	private datastore: Datastore;
-	private static instance?: DataStoreService;
+	private static _instance?: DataStoreService;
 
 	private constructor() {
 		this.datastore = new Datastore();
 	}
 
-	public static getInstance(): DataStoreService {
-		if (!this.instance) {
-			this.instance = new DataStoreService();
+	public static get instance(): DataStoreService {
+		if (!this._instance) {
+			this._instance = new DataStoreService();
 		}
 
-		return this.instance;
+		return this._instance;
+	}
+
+	private static set instance(s: DataStoreService) {
+		this._instance = s;
 	}
 
 	public async getUsers(): Promise<User[]> {

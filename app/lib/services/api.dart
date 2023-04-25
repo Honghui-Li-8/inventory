@@ -6,9 +6,11 @@ import 'package:inventory/models/user.dart';
 import 'package:inventory/services/user.dart';
 
 class APIService {
-  static const bool _testing = false;
+  static const bool _testing = true;
   static const String _baseUrl = _testing
-      ? 'http://168.150.111.230:8080'
+      // ? 'http://168.150.111.230:8080'
+      // ? 'http://192.168.55.146:8080'
+      ? 'http://localhost:8080'
       : 'https://inventory-paradise.wl.r.appspot.com';
   static APIService? _instance;
 

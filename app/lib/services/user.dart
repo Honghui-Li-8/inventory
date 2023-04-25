@@ -34,7 +34,7 @@ class UserService {
     _currentUser = await APIService.instance.getCurrentUser(uid);
   }
 
-  void loginWithEmailAndPassword(String email, String password) async {
+  Future<void> loginWithEmailAndPassword(String email, String password) async {
     await _auth.signInWithEmailAndPassword(
       email: email,
       password: password,

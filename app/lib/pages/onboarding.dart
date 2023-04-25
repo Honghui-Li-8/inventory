@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory/pages/setup.dart';
+import 'package:inventory/pages/signin.dart';
 import 'package:inventory/pages/signup.dart';
 
 class Onboarding extends StatelessWidget {
@@ -31,11 +32,7 @@ class Onboarding extends StatelessWidget {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const SetupScreen(
-                              uid: "1234",
-                              email: "",
-                            ),
-                          ));
+                              builder: (context) => const SignIn()));
                     },
                     child: const Text("Sign in"),
                   ),

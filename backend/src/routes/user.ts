@@ -2,16 +2,16 @@ import { User } from "../models/types";
 import { DataStoreService } from "../services/datastore";
 import { Route } from "./route";
 
-export const get_all_users: Route = {
+export const getAllUsers: Route = {
 	route: "/users",
 	method: "get",
-	async handler(req, res) {
+	async handler(_, res) {
 		const users = await DataStoreService.instance.getUsers();
 		res.json(users).status(200).send();
 	},
 };
 
-export const get_user: Route = {
+export const getUser: Route = {
 	route: "/users/:uid",
 	method: "get",
 	async handler(req, res) {
@@ -24,7 +24,7 @@ export const get_user: Route = {
 	},
 };
 
-export const create_user: Route = {
+export const createUser: Route = {
 	route: "/users",
 	method: "post",
 	async handler(req, res) {

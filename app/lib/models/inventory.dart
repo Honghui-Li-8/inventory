@@ -4,11 +4,9 @@ part 'inventory.g.dart';
 
 @JsonSerializable()
 class Inventory {
-  final String uid;
   final Item items;
 
   const Inventory({
-    required this.uid,
     required this.items,
   });
 

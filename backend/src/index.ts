@@ -1,5 +1,4 @@
-import express, { Express, IRouterMatcher } from "express";
-import { test_route } from "./routes/test";
+import express, { Express } from "express";
 import { routes } from "./routes/route";
 
 const app: Express = express();

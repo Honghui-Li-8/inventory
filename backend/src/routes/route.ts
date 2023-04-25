@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { test_route } from "./test";
-import { create_user, get_all_users, get_user } from "./user";
+import { getInventory, setInventoryItems } from "./inventory";
+import { createUser, getAllUsers, getUser } from "./user";
 
 export interface Route {
 	route: string;
@@ -8,4 +8,10 @@ export interface Route {
 	handler: (req: Request, res: Response) => void;
 }
 
-export const routes = [test_route, get_all_users, get_user, create_user];
+export const routes = [
+	getAllUsers,
+	getUser,
+	createUser,
+	getInventory,
+	setInventoryItems,
+];

@@ -9,7 +9,6 @@ export interface User {
 }
 
 export interface Inventory {
-	uid: string;
 	items: Item[];
 }
 

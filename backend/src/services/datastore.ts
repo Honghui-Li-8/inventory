@@ -1,5 +1,5 @@
 import { Datastore } from "@google-cloud/datastore";
-import { User, Inventory, Item } from "../models/types";
+import { User, Inventory, Item, Household } from "../models/types";
 
 export class DataStoreService {
 	private datastore: Datastore;
@@ -65,6 +65,15 @@ export class DataStoreService {
 
 		return inventoryKey.id!;
 	}
+    public async CreateHousehold(Household:Household): Promise<void> {
+        const inventory_id = await this.createInventory()
+        Household.inventory = inventory_id;
+        const HouseholdKey = this.datastore.key("Household");
+        await this.datastore.save({
+            key: HouseholdKey,
+            data: Household,
+        });
+    }
 
 	public async getInventory(id: string): Promise<Inventory> {
 		const key = this.datastore.key(["Inventory", this.datastore.int(id)]);
@@ -83,4 +92,12 @@ export class DataStoreService {
 			data: inventory,
 		});
 	}
+    public async getHousehold(id:string): Promise<Household> {
+        const key = this.datastore.key(["Household", this.datastore.int(id)]);
+        const [Household] = await this.datastore.get(key);
+        if(!Household) {
+            throw Error ("Household not found");
+        } 
+        return Household as Household
+    }
 }

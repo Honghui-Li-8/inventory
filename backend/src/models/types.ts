@@ -6,6 +6,7 @@ export interface User {
 	photoURL: string;
 	households: string[]; // list of household ids
 	inventory: string; // inventory id
+	invitations: string[]; // list of invitation refs
 }
 
 export interface Inventory {
@@ -20,8 +21,15 @@ export interface Item {
 
 export interface Household {
 	name: string;
-	uid: string;
 	owner: string;
 	inventory: string; // inventory id
 	members: string[]; // list of user ids
+	outgoingInvitations: string[]; // list of invitation ids
+}
+
+export interface Invitation {
+	household: string; // household id
+	sender: string; // sender uid
+	reciever: string; // reciever uid
+	status: "pending" | "accepted" | "declined";
 }

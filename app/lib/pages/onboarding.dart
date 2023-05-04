@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:inventory/pages/setup.dart';
 import 'package:inventory/pages/signin.dart';
 import 'package:inventory/pages/signup.dart';
 
@@ -20,7 +19,7 @@ class Onboarding extends StatelessWidget {
             Text(
               "Welcome!",
               style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                    color: Colors.black,
+                    color: Theme.of(context).colorScheme.onBackground,
                   ),
             ),
             Expanded(child: Container()),

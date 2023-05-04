@@ -1,5 +1,6 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/pages/onboarding.dart';
@@ -27,8 +28,22 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Onboarding(),
+    // return MaterialApp(
+    //   theme: ThemeData(useMaterial3: true),
+    //   home: Onboarding(),
+    // );
+    return DynamicColorBuilder(
+      builder: (ColorScheme? light, ColorScheme? dark) => MaterialApp(
+        theme: ThemeData(
+          colorScheme: light,
+          useMaterial3: true,
+        ),
+        darkTheme: ThemeData(
+          colorScheme: dark,
+          useMaterial3: true,
+        ),
+        home: const Onboarding(),
+      ),
     );
   }
 }

@@ -99,6 +99,7 @@ class _SetupScreenState extends State<SetupScreen> {
                   photoURL: imageUrl,
                   households: [],
                   inventory: "__PLACEHOLDER__REPLACE",
+                  invitations: [],
                 );
 
                 if (context.mounted) {

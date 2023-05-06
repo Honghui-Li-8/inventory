@@ -3,7 +3,7 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:inventory/pages/onboarding.dart';
+import 'package:inventory/pages/util/auth_guard.dart';
 import 'package:inventory/services/user.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
@@ -42,7 +42,7 @@ class MainApp extends StatelessWidget {
           colorScheme: dark,
           useMaterial3: true,
         ),
-        home: const Onboarding(),
+        home: const AuthGuardScreen(),
       ),
     );
   }

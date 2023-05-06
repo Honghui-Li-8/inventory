@@ -3,7 +3,7 @@ import { DataStoreService } from "../services/datastore";
 import { Route } from "./route";
 
 export const createHousehold: Route = {
-	route: "/household",
+	route: "/households",
 	method: "post",
 	async handler(req, res) {
 		try {
@@ -19,7 +19,7 @@ export const createHousehold: Route = {
 };
 
 export const getHousehold: Route = {
-	route: "/household/:id",
+	route: "/households/:id",
 	method: "get",
 	async handler(req, res) {
 		try {
@@ -32,6 +32,21 @@ export const getHousehold: Route = {
 		}
 	},
 };
+
+export const getHouseholds: Route = {
+    route: "/getHouseholds",
+    method: "post",
+    async handler(req, res) {
+        const householdIds: string[] = req.body;
+        const households: Household[] = [];
+        console.log(householdIds);
+        for(let id of householdIds) {
+            households.push(await DataStoreService.instance.getHousehold(id));
+        }
+        res.json(households).status(200).send();
+    }
+
+}
 
 export const inviteToHousehold: Route = {
 	route: "/invitations",

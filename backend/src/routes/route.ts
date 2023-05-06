@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { getInventory, setInventoryItems } from "./inventory";
 import { createUser, getAllUsers, getUser } from "./user";
-import { createHousehold, getHousehold, inviteToHousehold } from "./household";
+import { createHousehold, getHousehold, getHouseholds, inviteToHousehold } from "./household";
 
 export interface Route {
 	route: string;
@@ -17,5 +17,6 @@ export const routes = [
 	setInventoryItems,
 	createHousehold,
 	getHousehold,
+    getHouseholds,
 	inviteToHousehold,
 ];

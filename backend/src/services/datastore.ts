@@ -29,11 +29,11 @@ export class DataStoreService {
 
 	public async getUser(uid: string): Promise<User> {
 		const key = this.datastore.key(["User", uid]);
-		const [user] = await this.datastore.get(key);
+		const [user]: User[] = await this.datastore.get(key);
 		if (!user) {
 			throw new Error("User not found");
 		}
-		return user as User;
+		return user;
 	}
 
 	public async createUser(user: User): Promise<void> {

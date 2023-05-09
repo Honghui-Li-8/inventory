@@ -58,3 +58,15 @@ export const inviteToHousehold: Route = {
 		res.json(household).status(200).send();
 	},
 };
+
+export const deleteUser: Route = {
+    route: "/deleteUser",
+    method: "delete",
+    async handler(req,res) {
+        const uid = req.body.uid;
+        const hid = req.body.hid;
+        const oid = req.body.oid;
+        await Promise.all([DataStoreService.instance.deleteUser(uid,hid), DataStoreService.instance.deleteHousehold(uid,hid),]);
+        res.status(200).send();
+    }
+}

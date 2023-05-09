@@ -140,4 +140,17 @@ export class DataStoreService {
 			data: data,
 		});
 	}
+    public async deleteUser (id: string, hid: string): Promise<void> {
+        const a = await this.getUser(id);
+        const index = a.households.indexOf(hid, 0);
+        a.households.splice(index,1);
+        await this.setUser(a);
+    }
+    public async deleteHousehold (id: string, hid: string): Promise<void> {
+        const a = await this.getHousehold(hid);
+        const index = a.members.indexOf(id,0);
+        a.members.splice(index,1);
+        await this.setHousehold(hid,a);
+        
+    }
 }

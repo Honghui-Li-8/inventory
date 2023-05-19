@@ -1,4 +1,4 @@
-import { Datastore } from "@google-cloud/datastore";
+import { Datastore, PropertyFilter } from "@google-cloud/datastore";
 import { User, Inventory, Item, Household, Invitation } from "../models/types";
 
 export class DataStoreService {
@@ -65,7 +65,7 @@ export class DataStoreService {
 
 		return inventoryKey.id!;
 	}
-	public async createHousehold(household: Household): Promise<void> {
+	public async createHousehold(household: Household): Promise<String> {
 		const inventory_id = await this.createInventory();
 		household.inventory = inventory_id;
 		const householdKey = this.datastore.key("Household");
@@ -73,6 +73,10 @@ export class DataStoreService {
 			key: householdKey,
 			data: household,
 		});
+		const user = await this.getUser(household.owner);
+		user.households.push(householdKey.id!);
+		await this.setUser(user);
+		return householdKey.id!;
 	}
 
 	public async getInventory(id: string): Promise<Inventory> {
@@ -102,43 +106,65 @@ export class DataStoreService {
 		return household as Household;
 	}
 
-	public async createInvitation(invitation: Invitation): Promise<string> {
-		const key = this.datastore.key("Invitation");
-		this.datastore.save({
-			key: key,
-			data: invitation,
-		});
+	public async inviteUsersToHousehold(
+		householdId: string,
+		sender: string,
+		ids: string[]
+	) {
+		const invitations: Invitation[] = [];
+		for (const id of ids) {
+			const invitation: Invitation = {
+				household: householdId,
+				reciever: id,
+				sender: sender,
+				status: "pending",
+			};
+			invitations.push(invitation);
+		}
+		await this.createInvitations(invitations);
+	}
 
-		const reciever = await this.getUser(invitation.reciever);
-		reciever.invitations.push(key.id!);
+	public async createInvitations(invitations: Invitation[]): Promise<void> {
+		const household = await this.getHousehold(invitations[0].household);
 
-		const household = await this.getHousehold(invitation.household);
-		household.outgoingInvitations.push(key.id!);
+		for (const invitation of invitations) {
+			const key = this.datastore.key("Invitation");
+			await this.datastore.save({
+				key: key,
+				data: invitation,
+			});
 
-		await Promise.all([
-			this.setUser(reciever),
-			this.setHousehold(invitation.household, household),
-		]);
+			const reciever = await this.getUser(invitation.reciever);
+			reciever.invitations.push(key.id!);
 
-		return key.id!;
+			household.outgoingInvitations.push(key.id!);
+
+			await this.setUser(reciever);
+		}
+		await this.setHousehold(invitations[0].household, household);
 	}
 
 	private async setUser(user: User): Promise<void> {
-		const key = this.datastore.key(["User", user.uid]);
-		console.log(user);
-		await this.datastore.save({
-			key: key,
-			data: user,
-		});
+		await this.datastore.save(user);
 	}
 
 	private async setHousehold(id: string, data: Household): Promise<void> {
 		const key = this.datastore.key(["Household", this.datastore.int(id)]);
-		console.log(data);
-		await this.datastore.save({
-			key: key,
-			data: data,
-		});
+		await this.datastore.save(data);
+	}
+
+	public async userExists(email: string): Promise<User | null> {
+		const emailFilter = new PropertyFilter("email", "=", email);
+		const query = this.datastore
+			.createQuery("User")
+			.filter(emailFilter)
+			.limit(1);
+		const [users] = await this.datastore.runQuery(query);
+		if (users.length > 0) {
+			return users[0];
+		} else {
+			return null;
+		}
 	}
     public async deleteUser (id: string, hid: string): Promise<void> {
         const a = await this.getUser(id);

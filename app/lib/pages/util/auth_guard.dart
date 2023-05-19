@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/pages/onboarding.dart';
-import 'package:inventory/pages/home.dart';
+import 'package:inventory/pages/home/home.dart';
 import 'package:inventory/services/user.dart';
 
 class AuthGuardScreen extends StatefulWidget {

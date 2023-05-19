@@ -5,15 +5,17 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CircleImagePicker extends StatefulWidget {
-  final Function onSelect;
+  final Function(Uint8List data) onSelect;
   final double radius;
   final ImageProvider? initialImage;
-  const CircleImagePicker({
-    super.key,
-    required this.onSelect,
-    this.radius = 30,
-    this.initialImage,
-  });
+  final String label;
+
+  const CircleImagePicker(
+      {super.key,
+      required this.onSelect,
+      this.radius = 30,
+      this.initialImage,
+      this.label = "Select Photo"});
 
   @override
   State<CircleImagePicker> createState() => _CircleImagePickerState();
@@ -71,7 +73,7 @@ class _CircleImagePickerState extends State<CircleImagePicker> {
                 children: [
                   const Icon(Icons.add_photo_alternate),
                   Text(
-                    "Select Photo",
+                    widget.label,
                     style: TextStyle(fontSize: widget.radius * 0.25),
                   ),
                 ],

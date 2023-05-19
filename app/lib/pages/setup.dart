@@ -3,8 +3,10 @@ import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/models/user.dart';
+import 'package:inventory/pages/home/home.dart';
 import 'package:inventory/pages/util/wait.dart';
 import 'package:inventory/services/api.dart';
+import 'package:inventory/services/user.dart';
 import 'package:inventory/widgets/common/circle_image_picker.dart';
 
 class SetupScreen extends StatefulWidget {
@@ -108,13 +110,20 @@ class _SetupScreenState extends State<SetupScreen> {
                     MaterialPageRoute(
                       builder: (context) => WaitScreen<void>(
                         future: APIService.instance.createUser(user),
-                        onSuccess: (_) {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Placeholder(),
-                            ),
-                          );
+                        onSuccess: (_) async {
+                          await UserService.instance.refresh();
+                          if (context.mounted) {
+                            Navigator.popUntil(
+                              context,
+                              (route) => route.isFirst,
+                            );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
+                            );
+                          }
                         },
                       ),
                     ),

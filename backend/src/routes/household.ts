@@ -7,10 +7,10 @@ export const createHousehold: Route = {
 	method: "post",
 	async handler(req, res) {
 		try {
-			const users = await DataStoreService.instance.createHousehold(
+			const household = await DataStoreService.instance.createHousehold(
 				req.body as Household
 			);
-			res.json(users).status(200).send();
+			res.json({ id: household }).status(200).send();
 		} catch (e) {
 			console.log(e);
 			res.status(404).json({ error: "Could not create household" }).send();
@@ -34,28 +34,36 @@ export const getHousehold: Route = {
 };
 
 export const getHouseholds: Route = {
-    route: "/getHouseholds",
-    method: "post",
-    async handler(req, res) {
-        const householdIds: string[] = req.body;
-        const households: Household[] = [];
-        console.log(householdIds);
-        for(let id of householdIds) {
-            households.push(await DataStoreService.instance.getHousehold(id));
-        }
-        res.json(households).status(200).send();
-    }
-
-}
-
-export const inviteToHousehold: Route = {
-	route: "/invitations",
+	route: "/getHouseholds",
 	method: "post",
 	async handler(req, res) {
-		const household = await DataStoreService.instance.createInvitation(
-			req.body as Invitation
-		);
-		res.json(household).status(200).send();
+		const householdIds: string[] = req.body;
+		const households: Household[] = [];
+		for (let id of householdIds) {
+			households.push(await DataStoreService.instance.getHousehold(id));
+		}
+		res.json(households).status(200).send();
+	},
+};
+
+export const inviteToHousehold: Route = {
+	route: "/households/:id/invite",
+	method: "post",
+	async handler(req, res) {
+		const sender = req.body.sender;
+		const ids: string[] = req.body.invitees;
+		const householdId = req.params.id;
+
+		try {
+			DataStoreService.instance.inviteUsersToHousehold(
+				householdId,
+				sender,
+				ids
+			);
+			res.status(200).send();
+		} catch (error) {
+			res.status(500).send();
+		}
 	},
 };
 

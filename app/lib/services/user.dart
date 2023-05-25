@@ -1,11 +1,12 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flutter/foundation.dart';
 import 'package:inventory/models/user.dart';
 
 import 'api.dart';
 
-class UserService {
+class UserService extends ChangeNotifier {
   static UserService? _instance;
   static UserService get instance {
     _instance ??= UserService._();
@@ -64,5 +65,6 @@ class UserService {
 
   Future<void> refresh() async {
     await _init();
+    notifyListeners();
   }
 }

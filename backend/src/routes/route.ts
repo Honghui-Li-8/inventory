@@ -1,7 +1,13 @@
 import { Request, Response } from "express";
 import { getInventory, setInventoryItems } from "./inventory";
-import { createUser, getAllUsers, getUser } from "./user";
-import { createHousehold, deleteUser, getHousehold, getHouseholds, inviteToHousehold } from "./household";
+import { createUser, getAllUsers, getUser, userExists } from "./user";
+import {
+	createHousehold,
+	getHousehold,
+	getHouseholds,
+	inviteToHousehold,
+	deleteUser,
+} from "./household";
 
 export interface Route {
 	route: string;
@@ -17,7 +23,8 @@ export const routes = [
 	setInventoryItems,
 	createHousehold,
 	getHousehold,
-    getHouseholds,
+	getHouseholds,
+	userExists,
 	inviteToHousehold,
-    deleteUser,
+	deleteUser,
 ];

@@ -66,7 +66,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '309078044831',
     projectId: 'inventory-paradise-fb',
     storageBucket: 'inventory-paradise-fb.appspot.com',
-    iosClientId: '309078044831-elrrlc21go0irdktj4c94smj5b974mja.apps.googleusercontent.com',
+    iosClientId:
+        '309078044831-elrrlc21go0irdktj4c94smj5b974mja.apps.googleusercontent.com',
     iosBundleId: 'com.ucdavisgdsc.paradise.inventory',
   );
 
@@ -76,7 +77,8 @@ class DefaultFirebaseOptions {
     messagingSenderId: '309078044831',
     projectId: 'inventory-paradise-fb',
     storageBucket: 'inventory-paradise-fb.appspot.com',
-    iosClientId: '309078044831-elrrlc21go0irdktj4c94smj5b974mja.apps.googleusercontent.com',
+    iosClientId:
+        '309078044831-elrrlc21go0irdktj4c94smj5b974mja.apps.googleusercontent.com',
     iosBundleId: 'com.ucdavisgdsc.paradise.inventory',
   );
 }

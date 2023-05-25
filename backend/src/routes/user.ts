@@ -37,3 +37,16 @@ export const createUser: Route = {
 		}
 	},
 };
+
+export const userExists: Route = {
+	route: "/users/exists",
+	method: "post",
+	async handler(req, res) {
+		const user = await DataStoreService.instance.userExists(req.body.email);
+		if (user !== null) {
+			res.json(user).status(200).send();
+		} else {
+			res.status(404).send();
+		}
+	},
+};

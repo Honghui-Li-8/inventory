@@ -3,6 +3,7 @@ import 'dart:developer';
 
 import 'package:http/http.dart';
 import 'package:inventory/models/household.dart';
+import 'package:inventory/models/inventory.dart';
 import 'package:inventory/models/user.dart';
 import 'package:inventory/services/user.dart';
 
@@ -53,5 +54,14 @@ class APIService {
       List<dynamic> json = jsonDecode(res.body);
       return json.map((e) => Household.fromJson(e)).toList();
     });
+  }
+
+  Future<Inventory> getInventoryItems(String ID) {
+    String url = '$_baseUrl/inventory/$ID';
+    return get(Uri.parse(url)).then(
+      (value) => Inventory.fromJson(
+        jsonDecode(value.body),
+      ),
+    );
   }
 }

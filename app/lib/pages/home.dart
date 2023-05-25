@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory/models/household.dart';
 import 'package:inventory/models/user.dart';
+import 'package:inventory/pages/households.dart';
 import 'package:inventory/services/api.dart';
 import 'package:inventory/services/user.dart';
 
@@ -48,8 +49,20 @@ class _HomePageState extends State<HomePage> {
                     ? ListView.builder(
                         itemCount: snapshot.data!.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(snapshot.data![index].name),
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HouseholdPage(
+                                    household: snapshot.data![index],
+                                  ),
+                                ),
+                              );
+                            },
+                            child: ListTile(
+                              title: Text(snapshot.data![index].name),
+                            ),
                           );
                         },
                       )

@@ -29,9 +29,11 @@ class Onboarding extends StatelessWidget {
                   child: FilledButton(
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const SignIn()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignIn(),
+                        ),
+                      );
                     },
                     child: const Text("Sign in"),
                   ),

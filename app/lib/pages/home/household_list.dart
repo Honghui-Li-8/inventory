@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory/models/household.dart';
-import 'package:inventory/pages/home/households_provider.dart';
+import 'package:inventory/pages/home/user_provider.dart';
 import 'package:inventory/widgets/household_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +9,7 @@ class HouseholdList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HouseholdProvider provider = Provider.of<HouseholdProvider>(context);
+    final UserProvider provider = Provider.of<UserProvider>(context);
     final List<Household>? households = provider.housholds;
 
     if (households == null) {
@@ -27,7 +27,7 @@ class HouseholdList extends StatelessWidget {
     } else {
       return RefreshIndicator(
         onRefresh: () async {
-          await Provider.of<HouseholdProvider>(
+          await Provider.of<UserProvider>(
             context,
             listen: false,
           ).refresh();

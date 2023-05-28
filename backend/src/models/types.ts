@@ -27,9 +27,21 @@ export interface Household {
 	outgoingInvitations: string[]; // list of invitation ids
 }
 
+export enum InvitationStatus {
+	PENDING = "pending",
+	ACCEPTED = "accepted",
+	DECLINED = "declined",
+}
+
 export interface Invitation {
 	household: string; // household id
 	sender: string; // sender uid
 	reciever: string; // reciever uid
-	status: "pending" | "accepted" | "declined";
+	status: InvitationStatus;
+}
+
+export interface Recipe {
+	name: string;
+	ingredients: string[];
+	steps: string[];
 }

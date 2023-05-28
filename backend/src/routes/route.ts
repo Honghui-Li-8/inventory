@@ -8,6 +8,8 @@ import {
 	inviteToHousehold,
 	deleteUser,
 } from "./household";
+import { getInvitations, updateInvitation } from "./invitation";
+import { generateRecipes } from "./recipe";
 
 export interface Route {
 	route: string;
@@ -27,4 +29,7 @@ export const routes = [
 	userExists,
 	inviteToHousehold,
 	deleteUser,
+	getInvitations,
+	updateInvitation,
+	generateRecipes,
 ];

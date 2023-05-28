@@ -7,6 +7,8 @@ import 'package:inventory/pages/util/auth_guard.dart';
 import 'package:inventory/services/user.dart';
 import 'package:image_picker_android/image_picker_android.dart';
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
+import 'package:provider/provider.dart';
+import 'package:inventory/pages/home/user_provider.dart';
 
 import 'firebase_options.dart';
 
@@ -28,21 +30,20 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    //   theme: ThemeData(useMaterial3: true),
-    //   home: Onboarding(),
-    // );
-    return DynamicColorBuilder(
-      builder: (ColorScheme? light, ColorScheme? dark) => MaterialApp(
-        theme: ThemeData(
-          colorScheme: light,
-          useMaterial3: true,
+    return ChangeNotifierProvider<UserProvider>(
+      create: (_) => UserProvider(),
+      child: DynamicColorBuilder(
+        builder: (ColorScheme? light, ColorScheme? dark) => MaterialApp(
+          theme: ThemeData(
+            colorScheme: light,
+            useMaterial3: true,
+          ),
+          darkTheme: ThemeData(
+            colorScheme: dark,
+            useMaterial3: true,
+          ),
+          home: const AuthGuardScreen(),
         ),
-        darkTheme: ThemeData(
-          colorScheme: dark,
-          useMaterial3: true,
-        ),
-        home: const AuthGuardScreen(),
       ),
     );
   }

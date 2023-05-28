@@ -5,6 +5,7 @@ import 'dart:typed_data';
 import 'package:http/http.dart';
 import 'package:inventory/models/household.dart';
 import 'package:inventory/models/inventory.dart';
+import 'package:inventory/models/invitation.dart';
 import 'package:inventory/models/user.dart';
 import 'package:inventory/services/user.dart';
 
@@ -12,7 +13,7 @@ class APIService {
   static const bool _testing = false;
   static const String _baseUrl = _testing
       // ? 'http://168.150.111.230:8080'
-      ? 'http://192.168.17.146:8080'
+      ? 'https://f8a6-168-150-97-15.ngrok-free.app'
       // ? 'http://168.150.60.67:8080'
       : 'https://inventory-paradise.wl.r.appspot.com';
   static APIService? _instance;
@@ -24,7 +25,7 @@ class APIService {
 
   APIService._();
 
-  Future<User> getCurrentUser(String uid) async {
+  Future<User> getUser(String uid) async {
     String url = '$_baseUrl/users/$uid';
     Response res = await get(Uri.parse(url));
     return User.fromJson(jsonDecode(res.body));
@@ -123,5 +124,43 @@ class APIService {
         jsonDecode(value.body),
       ),
     );
+  }
+
+  Future<List<Invitation>> getInvitations(List<String> invitationIds) {
+    String url = '$_baseUrl/getInvitations';
+    return post(
+      Uri.parse(url),
+      body: jsonEncode(invitationIds),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    ).then((res) {
+      List<dynamic> json = jsonDecode(res.body);
+      return json.map((e) => Invitation.fromJson(e)).toList();
+    });
+  }
+
+  Future<void> acceptInvitation(Invitation invitaion, String id) async {
+    String url = '$_baseUrl/invitations/$id/update';
+    await post(
+      Uri.parse(url),
+      body: jsonEncode({"status": "accepted"}),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    await UserService.instance.refresh();
+  }
+
+  Future<void> declineInvitation(Invitation invitaion, String id) async {
+    String url = '$_baseUrl/invitations/$id/update';
+    await post(
+      Uri.parse(url),
+      body: jsonEncode({"status": "declined"}),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    await UserService.instance.refresh();
   }
 }

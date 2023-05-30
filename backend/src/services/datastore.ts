@@ -132,6 +132,7 @@ export class DataStoreService {
 	}
 
 	public async createInvitations(invitations: Invitation[]): Promise<void> {
+        if(invitations.length == 0) { return; }
 		const household = await this.getHousehold(invitations[0].household);
 
 		for (const invitation of invitations) {
@@ -163,11 +164,11 @@ export class DataStoreService {
 		return invitation as Invitation;
 	}
 
-	private async setUser(user: User): Promise<void> {
+	public async setUser(user: User): Promise<void> {
 		await this.datastore.save(user);
 	}
 
-	private async setHousehold(id: string, data: Household): Promise<void> {
+	public async setHousehold(id: string, data: Household): Promise<void> {
 		const key = this.datastore.key(["Household", this.datastore.int(id)]);
 		await this.datastore.save(data);
 	}

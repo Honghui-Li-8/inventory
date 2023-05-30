@@ -81,3 +81,20 @@ export const deleteUser: Route = {
 		res.status(200).send();
 	},
 };
+
+export const setMembers: Route = {
+	route: "/households/:id/updateMembers",
+	method: "post",
+	async handler(req, res) {
+		const householdId = req.params.id;
+		const members: string[] = req.body;
+		const household = await DataStoreService.instance.getHousehold(householdId);
+		household.members = members;
+		try {
+			await DataStoreService.instance.setHousehold(householdId, household);
+			res.status(200).send();
+		} catch (e) {
+			res.status(500).send();
+		}
+	},
+};

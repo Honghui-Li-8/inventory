@@ -7,6 +7,7 @@ import {
 	getHouseholds,
 	inviteToHousehold,
 	deleteUser,
+	setMembers,
 } from "./household";
 import { getInvitations, updateInvitation } from "./invitation";
 import { generateRecipes } from "./recipe";
@@ -32,4 +33,5 @@ export const routes = [
 	getInvitations,
 	updateInvitation,
 	generateRecipes,
+	setMembers,
 ];

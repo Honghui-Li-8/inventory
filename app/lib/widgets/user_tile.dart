@@ -5,16 +5,19 @@ import 'package:inventory/services/api.dart';
 enum UserState { loading, found, notFound }
 
 class UserTile extends StatefulWidget {
-  final String email;
+  final String identifier;
   final int id;
-  final void Function(int) onDelete;
-  final void Function(UserState, User?) onStateChange;
+  final void Function(int id) onDelete;
+  final void Function(int id, UserState state, User? user) onStateChange;
+  final bool isIdentifierUid;
+
   const UserTile({
     super.key,
-    required this.email,
+    required this.identifier,
     required this.id,
     required this.onDelete,
     required this.onStateChange,
+    this.isIdentifierUid = false,
   });
 
   @override
@@ -32,18 +35,28 @@ class _UserTileState extends State<UserTile> {
   }
 
   Future<void> _loadUser() async {
-    User? user = await APIService.instance.userExists(widget.email);
-    if (user == null) {
+    setState(() {
+      _state = UserState.loading;
+    });
+    if (widget.isIdentifierUid) {
+      user = await APIService.instance.getUser(widget.identifier);
       setState(() {
-        _state = UserState.notFound;
-      });
-    } else {
-      setState(() {
-        this.user = user;
         _state = UserState.found;
       });
+      widget.onStateChange(widget.id, _state, user);
+    } else {
+      user = await APIService.instance.userExists(widget.identifier);
+      if (user == null) {
+        setState(() {
+          _state = UserState.notFound;
+        });
+      } else {
+        setState(() {
+          _state = UserState.found;
+        });
+      }
+      widget.onStateChange(widget.id, _state, user);
     }
-    widget.onStateChange(_state, user);
   }
 
   @override
@@ -53,7 +66,7 @@ class _UserTileState extends State<UserTile> {
         return Card(
           child: ListTile(
             leading: const CircularProgressIndicator(),
-            title: Text(widget.email),
+            title: const Text("Loading..."),
             trailing: IconButton(
               icon: const Icon(Icons.remove_circle_outline),
               onPressed: () {
@@ -81,7 +94,7 @@ class _UserTileState extends State<UserTile> {
           child: ListTile(
             leading: const Icon(Icons.error),
             title: Text(
-              "${widget.email.length > 18 ? "${widget.email.substring(0, 15)}..." : widget.email} not found",
+              "${widget.identifier.length > 18 ? "${widget.identifier.substring(0, 15)}..." : widget.identifier} not found",
             ),
             trailing: IconButton(
               icon: const Icon(Icons.remove_circle_outline),

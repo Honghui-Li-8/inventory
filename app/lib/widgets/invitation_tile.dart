@@ -4,9 +4,7 @@ import 'package:inventory/models/household.dart';
 
 import 'package:inventory/models/invitation.dart';
 import 'package:inventory/models/user.dart';
-import 'package:inventory/pages/home/user_provider.dart';
 import 'package:inventory/services/api.dart';
-import 'package:provider/provider.dart';
 
 enum _TaskState {
   idle,

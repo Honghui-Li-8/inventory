@@ -31,7 +31,7 @@ class _AuthGuardScreenState extends State<AuthGuardScreen> {
           if (context.mounted) {
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => HomePage()),
+              MaterialPageRoute(builder: (context) => const HomePage()),
             );
           }
         }

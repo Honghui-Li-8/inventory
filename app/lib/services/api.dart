@@ -13,7 +13,7 @@ class APIService {
   static const bool _testing = false;
   static const String _baseUrl = _testing
       // ? 'http://168.150.111.230:8080'
-      ? 'https://f8a6-168-150-97-15.ngrok-free.app'
+      ? "https://9fcf-168-150-43-81.ngrok-free.app"
       // ? 'http://168.150.60.67:8080'
       : 'https://inventory-paradise.wl.r.appspot.com';
   static APIService? _instance;
@@ -162,5 +162,49 @@ class APIService {
       },
     );
     await UserService.instance.refresh();
+  }
+
+  Future<void> setHouseholdMembers(String householdId, List<String> members) {
+    String url = '$_baseUrl/households/$householdId/updateMembers';
+    return post(
+      Uri.parse(url),
+      body: jsonEncode(members),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+  }
+
+  Future<void> editMembers({
+    required Household household,
+    required String householdId,
+    required List<User> members,
+  }) async {
+    List<String> newMemberIds = [];
+    List<String> removedMembers = [];
+
+    for (var member in members) {
+      if (!household.members.contains(member.uid)) {
+        newMemberIds.add(member.uid);
+      }
+    }
+
+    List<User> newMembers = [];
+    for (var member in newMemberIds) {
+      newMembers.add(await getUser(member));
+    }
+
+    for (var member in household.members) {
+      if (!members.map((e) => e.uid).contains(member)) {
+        removedMembers.add(member);
+      }
+    }
+
+    household.members
+        .removeWhere((element) => removedMembers.contains(element));
+
+    print(newMembers);
+    await createInvitaions(householdId, newMembers);
+    await setHouseholdMembers(householdId, household.members);
   }
 }

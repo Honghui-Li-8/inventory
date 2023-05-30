@@ -35,13 +35,22 @@ class MainApp extends StatelessWidget {
       child: DynamicColorBuilder(
         builder: (ColorScheme? light, ColorScheme? dark) => MaterialApp(
           theme: ThemeData(
-            colorScheme: light,
+            colorScheme: light ??
+                ColorScheme.fromSeed(
+                  seedColor: Colors.blue,
+                  brightness: Brightness.light,
+                ),
             useMaterial3: true,
           ),
           darkTheme: ThemeData(
-            colorScheme: dark,
+            colorScheme: dark ??
+                ColorScheme.fromSeed(
+                  seedColor: Colors.blue,
+                  brightness: Brightness.dark,
+                ),
             useMaterial3: true,
           ),
+          themeMode: ThemeMode.system,
           home: const AuthGuardScreen(),
         ),
       ),

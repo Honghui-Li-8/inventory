@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory/models/household.dart';
 import 'package:inventory/pages/home/user_provider.dart';
+import 'package:inventory/services/user.dart';
 import 'package:inventory/widgets/household_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -27,18 +28,19 @@ class HouseholdList extends StatelessWidget {
     } else {
       return RefreshIndicator(
         onRefresh: () async {
-          await Provider.of<UserProvider>(
-            context,
-            listen: false,
-          ).refresh();
+          await UserService.instance.refresh();
+          // await Provider.of<UserProvider>(
+          //   context,
+          //   listen: false,
+          // ).refresh();
         },
-        child: ListView.builder(
+        child: ListView.separated(
           itemCount: households.length,
-          itemBuilder: (context, index) {
-            return HouseholdTile(
-              household: households[index],
-            );
-          },
+          itemBuilder: (_, index) => HouseholdTile(
+            householdId: provider.currentUser!.households[index],
+            household: households[index],
+          ),
+          separatorBuilder: (_, __) => const Divider(),
         ),
       );
     }

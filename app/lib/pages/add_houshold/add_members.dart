@@ -49,6 +49,7 @@ class _AddMembersPageState extends State<AddMembersPage> {
   }
 
   void _defaultAction(List<User> users) {
+    print(users);
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -136,7 +137,7 @@ class _AddMembersPageState extends State<AddMembersPage> {
                     } else {
                       _defaultAction(_users.values.whereType<User>().toList());
                     }
-                    Navigator.pop(context);
+                    // Navigator.pop(context);
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,

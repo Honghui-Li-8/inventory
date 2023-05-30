@@ -203,7 +203,6 @@ class APIService {
     household.members
         .removeWhere((element) => removedMembers.contains(element));
 
-    print(newMembers);
     await createInvitaions(householdId, newMembers);
     await setHouseholdMembers(householdId, household.members);
   }

@@ -57,6 +57,7 @@ class _HouseholdPageState extends State<HouseholdPage> {
                         initialUserIds: widget.household.members,
                         submitLabel: "Done",
                         onSubmit: (users) async {
+                          Navigator.pop(context);
                           APIService.instance.editMembers(
                             household: widget.household,
                             householdId: widget.householdId,

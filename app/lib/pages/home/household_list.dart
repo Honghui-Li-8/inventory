@@ -22,17 +22,18 @@ class HouseholdList extends StatelessWidget {
         child: CircularProgressIndicator(),
       );
     } else if (households.isEmpty) {
-      return const Center(
-        child: Text('No households found'),
+      return RefreshIndicator(
+        onRefresh: () async {
+          await UserService.instance.refresh();
+        },
+        child: const Center(
+          child: Text('No households found'),
+        ),
       );
     } else {
       return RefreshIndicator(
         onRefresh: () async {
           await UserService.instance.refresh();
-          // await Provider.of<UserProvider>(
-          //   context,
-          //   listen: false,
-          // ).refresh();
         },
         child: ListView.separated(
           itemCount: households.length,

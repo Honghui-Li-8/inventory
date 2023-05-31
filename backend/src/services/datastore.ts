@@ -132,7 +132,9 @@ export class DataStoreService {
 	}
 
 	public async createInvitations(invitations: Invitation[]): Promise<void> {
-        if(invitations.length == 0) { return; }
+		if (invitations.length == 0) {
+			return;
+		}
 		const household = await this.getHousehold(invitations[0].household);
 
 		for (const invitation of invitations) {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { getInventory, setInventoryItems } from "./inventory";
-import { createUser, getAllUsers, getUser, userExists } from "./user";
+import { createUser, getAllUsers, getUser, updateUser, userExists } from "./user";
 import {
 	createHousehold,
 	getHousehold,
@@ -34,4 +34,5 @@ export const routes = [
 	updateInvitation,
 	generateRecipes,
 	setMembers,
+	updateUser,
 ];

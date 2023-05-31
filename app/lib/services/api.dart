@@ -7,13 +7,14 @@ import 'package:inventory/models/household.dart';
 import 'package:inventory/models/inventory.dart';
 import 'package:inventory/models/invitation.dart';
 import 'package:inventory/models/user.dart';
+import 'package:inventory/services/firebase.dart';
 import 'package:inventory/services/user.dart';
 
 class APIService {
-  static const bool _testing = false;
+  static const bool _testing = true;
   static const String _baseUrl = _testing
       // ? 'http://168.150.111.230:8080'
-      ? "https://9fcf-168-150-43-81.ngrok-free.app"
+      ? "https://85f9-168-150-45-175.ngrok-free.app"
       // ? 'http://168.150.60.67:8080'
       : 'https://inventory-paradise.wl.r.appspot.com';
   static APIService? _instance;
@@ -205,5 +206,41 @@ class APIService {
 
     await createInvitaions(householdId, newMembers);
     await setHouseholdMembers(householdId, household.members);
+  }
+
+  Future<void> updateUser({
+    required User initialData,
+    String? fname,
+    String? lname,
+    Uint8List? photo,
+  }) async {
+    String? photoUrl;
+    if (photo != null) {
+      photoUrl = await FirebaseService.uploadImage(
+        imageData: photo,
+        folder: "profile_photos",
+        id: initialData.uid,
+      );
+    }
+    User newUser = User(
+      uid: initialData.uid,
+      fname: fname ?? initialData.fname,
+      lname: lname ?? initialData.lname,
+      email: initialData.email,
+      photoURL: photoUrl ?? initialData.photoURL,
+      households: initialData.households,
+      invitations: initialData.invitations,
+      inventory: initialData.inventory,
+    );
+
+    String url = '$_baseUrl/users/${initialData.uid}';
+    await put(
+      Uri.parse(url),
+      body: jsonEncode(newUser.toJson()),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    await UserService.instance.refresh();
   }
 }

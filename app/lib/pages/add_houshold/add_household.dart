@@ -65,7 +65,10 @@ class _AddHouseholdPageState extends State<AddHouseholdPage> {
               },
               child: const Row(
                 mainAxisSize: MainAxisSize.min,
-                children: [Text('Add Members'), Icon(Icons.arrow_forward)],
+                children: [
+                  Text('Add Members'),
+                  Icon(Icons.arrow_forward),
+                ],
               ),
             ),
           ),

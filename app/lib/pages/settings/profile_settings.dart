@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/models/user.dart';
+import 'package:inventory/pages/settings/settings.dart';
+import 'package:inventory/pages/util/wait.dart';
+import 'package:inventory/services/api.dart';
 import 'package:inventory/widgets/common/circle_image_picker.dart';
 
 class ProfileSettingsPage extends StatefulWidget {
@@ -20,6 +22,8 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   final TextEditingController _firstnameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
 
+  Uint8List? _image;
+
   @override
   void initState() {
     setState(() {
@@ -30,10 +34,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   }
 
   void _updateImage(Uint8List newImage) async {
-    Reference imageRefrence = FirebaseStorage.instance.ref(
-      "/profile_photos/${widget.userData.uid}",
-    );
-    await imageRefrence.putData(newImage);
+    _image = newImage;
   }
 
   @override
@@ -92,7 +93,36 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
               ]),
             ),
             FilledButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => WaitScreen<void>(
+                      future: APIService.instance.updateUser(
+                        initialData: widget.userData,
+                        fname:
+                            _firstnameController.text == widget.userData.fname
+                                ? null
+                                : _firstnameController.text,
+                        lname: _lastnameController.text == widget.userData.lname
+                            ? null
+                            : _lastnameController.text,
+                        photo: _image,
+                      ),
+                      onSuccess: (_) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (_) => const SettingsPage(),
+                        //   ),
+                        // );
+                      },
+                    ),
+                  ),
+                );
+              },
               child: Row(children: [
                 Expanded(child: Container()),
                 const Text("Done"),

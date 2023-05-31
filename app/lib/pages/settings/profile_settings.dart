@@ -73,7 +73,7 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
-                Divider(),
+                const Divider(),
                 TextField(
                   controller: _lastnameController,
                   decoration: InputDecoration(

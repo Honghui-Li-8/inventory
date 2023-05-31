@@ -9,28 +9,32 @@ class PrivacySettings extends StatefulWidget {
 
 class _PrivacySettings extends State<PrivacySettings> {
   bool password = false;
-  Widget build(BuildContext) {
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: Text("Privacy")),
-        body: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32, vertical: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Divider(),
-                ListTile(
-                  title: Text("Set Password"),
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomePage(),
-                      ),
-                    );
-                  },
-                )
-              ],
-            )));
+      appBar: AppBar(title: const Text("Privacy")),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 20),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            const Divider(),
+            ListTile(
+              title: const Text("Set Password"),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                );
+              },
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

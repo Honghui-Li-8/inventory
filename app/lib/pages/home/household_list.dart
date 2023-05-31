@@ -26,8 +26,18 @@ class HouseholdList extends StatelessWidget {
         onRefresh: () async {
           await UserService.instance.refresh();
         },
-        child: const Center(
-          child: Text('No households found'),
+        child: LayoutBuilder(
+          builder: (context, constrains) => SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constrains.maxHeight,
+              ),
+              child: const Center(
+                child: Text('You are not in any households'),
+              ),
+            ),
+          ),
         ),
       );
     } else {

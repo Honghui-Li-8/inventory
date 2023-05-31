@@ -11,7 +11,7 @@ import 'package:inventory/services/firebase.dart';
 import 'package:inventory/services/user.dart';
 
 class APIService {
-  static const bool _testing = true;
+  static const bool _testing = false;
   static const String _baseUrl = _testing
       // ? 'http://168.150.111.230:8080'
       ? "https://85f9-168-150-45-175.ngrok-free.app"

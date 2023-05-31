@@ -2,7 +2,6 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:inventory/models/user.dart';
-import 'package:inventory/pages/settings/settings.dart';
 import 'package:inventory/pages/util/wait.dart';
 import 'package:inventory/services/api.dart';
 import 'package:inventory/widgets/common/circle_image_picker.dart';
@@ -112,12 +111,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                       onSuccess: (_) {
                         Navigator.pop(context);
                         Navigator.pop(context);
-                        // Navigator.pushReplacement(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (_) => const SettingsPage(),
-                        //   ),
-                        // );
                       },
                     ),
                   ),
@@ -128,20 +121,6 @@ class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
                 const Text("Done"),
                 Expanded(child: Container())
               ]),
-              // style: ButtonStyle(
-              //   padding:
-              //       MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(10)),
-              //   foregroundColor: MaterialStateProperty.all<Color>(
-              //       Theme.of(context).colorScheme.secondary),
-              //   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-              //     RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(10.0),
-              //       side: BorderSide(
-              //         color: Theme.of(context).colorScheme.secondary,
-              //       ),
-              //     ),
-              //   ),
-              // ),
             ),
           ],
         ),

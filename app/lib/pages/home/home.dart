@@ -3,6 +3,7 @@ import 'package:inventory/pages/add_houshold/add_household.dart';
 import 'package:inventory/pages/home/household_list.dart';
 import 'package:inventory/pages/home/invitation_list.dart';
 import 'package:inventory/pages/home/user_provider.dart';
+import 'package:inventory/pages/settings/settings.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,7 +16,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const HouseholdList(),
-    const Text('Settings'),
+    const SettingsPage(),
   ];
 
   int _selectedIndex = 0;

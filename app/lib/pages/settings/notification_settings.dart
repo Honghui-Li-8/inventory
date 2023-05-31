@@ -16,7 +16,9 @@ class _NotificationSettingsState extends State<NotificationSettings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Notifications")),
+      appBar: AppBar(
+        title: const Text("Notifications"),
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 30),
         child: Column(

@@ -26,12 +26,7 @@ class _InvitationListState extends State<InvitationList> {
             idx: idx,
             invitaion: userProvider.invitations![idx],
             inventoryId: userProvider.currentUser!.invitations[idx],
-            onAction: (idx) {
-              setState(() {
-                print(idx);
-                // userProvider.invitations!.removeAt(idx);
-              });
-            },
+            onAction: (idx) {},
           ),
         ),
       ),

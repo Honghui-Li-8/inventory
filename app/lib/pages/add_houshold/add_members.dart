@@ -49,7 +49,6 @@ class _AddMembersPageState extends State<AddMembersPage> {
   }
 
   void _defaultAction(List<User> users) {
-    print(users);
     Navigator.push(
       context,
       MaterialPageRoute(

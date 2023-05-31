@@ -117,8 +117,8 @@ class APIService {
     );
   }
 
-  Future<Inventory> getInventoryItems(String ID) {
-    String url = '$_baseUrl/inventory/$ID';
+  Future<Inventory> getInventoryItems(String id) {
+    String url = '$_baseUrl/inventory/$id';
     return get(Uri.parse(url)).then(
       (value) => Inventory.fromJson(
         jsonDecode(value.body),

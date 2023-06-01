@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:inventory/models/household.dart';
-import 'package:inventory/pages/household_detail.dart';
+import 'package:inventory/pages/household/household_detail.dart';
 
 class HouseholdTile extends StatelessWidget {
   final Household household;

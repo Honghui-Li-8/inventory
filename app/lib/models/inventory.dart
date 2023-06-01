@@ -4,7 +4,7 @@ part 'inventory.g.dart';
 
 @JsonSerializable()
 class Inventory {
-  final Item items;
+  final List<Item> items;
 
   const Inventory({
     required this.items,

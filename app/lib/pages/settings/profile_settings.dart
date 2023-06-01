@@ -1,31 +1,39 @@
 import 'dart:typed_data';
 
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:inventory/models/user.dart';
-import 'package:inventory/pages/home/home.dart';
 import 'package:inventory/pages/util/wait.dart';
 import 'package:inventory/services/api.dart';
-import 'package:inventory/services/user.dart';
 import 'package:inventory/widgets/common/circle_image_picker.dart';
 
-class SetupScreen extends StatefulWidget {
-  final String uid;
-  final String email;
-  const SetupScreen({super.key, required this.uid, required this.email});
+class ProfileSettingsPage extends StatefulWidget {
+  final User userData;
+  const ProfileSettingsPage({
+    super.key,
+    required this.userData,
+  });
 
   @override
-  State<SetupScreen> createState() => _SetupScreenState();
+  State<ProfileSettingsPage> createState() => _ProfileSettingsPageState();
 }
 
-class _SetupScreenState extends State<SetupScreen> {
+class _ProfileSettingsPageState extends State<ProfileSettingsPage> {
   final TextEditingController _firstnameController = TextEditingController();
   final TextEditingController _lastnameController = TextEditingController();
 
-  Uint8List imageData = Uint8List(0);
+  Uint8List? _image;
+
+  @override
+  void initState() {
+    setState(() {
+      _firstnameController.text = widget.userData.fname;
+      _lastnameController.text = widget.userData.lname;
+    });
+    super.initState();
+  }
 
   void _updateImage(Uint8List newImage) async {
-    imageData = newImage;
+    _image = newImage;
   }
 
   @override
@@ -33,7 +41,7 @@ class _SetupScreenState extends State<SetupScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text("Setup your account"),
+        title: const Text("Profile Settings"),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 30),
@@ -42,6 +50,9 @@ class _SetupScreenState extends State<SetupScreen> {
             CircleImagePicker(
               onSelect: _updateImage,
               radius: 70,
+              initialImage: NetworkImage(
+                widget.userData.photoURL,
+              ),
             ),
             Expanded(
               flex: 3,
@@ -81,54 +92,29 @@ class _SetupScreenState extends State<SetupScreen> {
               ]),
             ),
             FilledButton(
-              onPressed: () async {
-                String imageUrl =
-                    "https://firebasestorage.googleapis.com/v0/b/chat-paradise-gdsc.appspot.com/o/profile_photos%2Fdefault.jpeg?alt=media&token=79142ebf-04d9-4de9-8f51-d2803637f68a";
-
-                if (imageData.isNotEmpty) {
-                  Reference imageRefrence = FirebaseStorage.instance.ref(
-                    "/profile_photos/${widget.uid}",
-                  );
-                  await imageRefrence.putData(imageData);
-                  imageUrl = await imageRefrence.getDownloadURL();
-                }
-
-                final User user = User(
-                  uid: widget.uid,
-                  fname: _firstnameController.text,
-                  lname: _lastnameController.text,
-                  email: widget.email,
-                  photoURL: imageUrl,
-                  households: [],
-                  inventory: "__PLACEHOLDER__REPLACE",
-                  invitations: [],
-                );
-
-                if (context.mounted) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => WaitScreen<void>(
-                        future: APIService.instance.createUser(user),
-                        onSuccess: (_) async {
-                          await UserService.instance.refresh();
-                          if (context.mounted) {
-                            Navigator.popUntil(
-                              context,
-                              (route) => route.isFirst,
-                            );
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const HomePage(),
-                              ),
-                            );
-                          }
-                        },
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => WaitScreen<void>(
+                      future: APIService.instance.updateUser(
+                        initialData: widget.userData,
+                        fname:
+                            _firstnameController.text == widget.userData.fname
+                                ? null
+                                : _firstnameController.text,
+                        lname: _lastnameController.text == widget.userData.lname
+                            ? null
+                            : _lastnameController.text,
+                        photo: _image,
                       ),
+                      onSuccess: (_) {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
                     ),
-                  );
-                }
+                  ),
+                );
               },
               child: Row(children: [
                 Expanded(child: Container()),

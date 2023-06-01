@@ -11,6 +11,7 @@ class User {
   final String photoURL;
   final List<String> households;
   final String inventory;
+  final List<String> invitations;
 
   const User({
     required this.lname,
@@ -20,6 +21,7 @@ class User {
     required this.photoURL,
     required this.households,
     required this.inventory,
+    required this.invitations,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);

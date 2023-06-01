@@ -1,10 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 class WaitScreen<T> extends StatefulWidget {
   final Future<T> future;
-  final Function(T) onSuccess;
+  final void Function(T) onSuccess;
 
   const WaitScreen({
     super.key,
@@ -22,7 +20,6 @@ class _WaitScreenState<T> extends State<WaitScreen<T>> {
     super.initState();
     widget.future.then(
       (T value) {
-        log(value.toString());
         widget.onSuccess(value);
       },
     );

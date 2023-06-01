@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:inventory/pages/home/home.dart';
 import 'package:inventory/pages/signup.dart';
 import 'package:inventory/services/user.dart';
 
@@ -123,13 +124,16 @@ class _SignInState extends State<SignIn> {
                     );
                     return;
                   }
-                  // ignore: use_build_context_synchronously
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const Placeholder(),
-                    ),
-                  );
+                  await UserService.instance.refresh();
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ),
+                    );
+                  }
                 },
                 child: const Padding(
                   padding: EdgeInsets.all(8.0),

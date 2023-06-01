@@ -1,11 +1,12 @@
 import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart' as auth;
+import 'package:flutter/foundation.dart';
 import 'package:inventory/models/user.dart';
 
 import 'api.dart';
 
-class UserService {
+class UserService extends ChangeNotifier {
   static UserService? _instance;
   static UserService get instance {
     _instance ??= UserService._();
@@ -31,7 +32,7 @@ class UserService {
 
   Future<void> _init() async {
     String uid = _auth.currentUser!.uid;
-    _currentUser = await APIService.instance.getCurrentUser(uid);
+    _currentUser = await APIService.instance.getUser(uid);
   }
 
   Future<void> loginWithEmailAndPassword(String email, String password) async {
@@ -64,5 +65,11 @@ class UserService {
 
   Future<void> refresh() async {
     await _init();
+    notifyListeners();
+  }
+
+  void signOut() {
+    _auth.signOut();
+    notifyListeners();
   }
 }

@@ -11,10 +11,10 @@ import 'package:inventory/services/firebase.dart';
 import 'package:inventory/services/user.dart';
 
 class APIService {
-  static const bool _testing = false;
+  static const bool _testing = true;
   static const String _baseUrl = _testing
       // ? 'http://168.150.111.230:8080'
-      ? "https://85f9-168-150-45-175.ngrok-free.app"
+      ? "https://9a15-168-150-41-234.ngrok-free.app"
       // ? 'http://168.150.60.67:8080'
       : 'https://inventory-paradise.wl.r.appspot.com';
   static APIService? _instance;
@@ -242,5 +242,12 @@ class APIService {
       },
     );
     await UserService.instance.refresh();
+  }
+
+  Future<Inventory> getInventory(String inventoryId) async {
+    String url = '$_baseUrl/inventory/$inventoryId';
+    Response res = await get(Uri.parse(url));
+    print(res.body);
+    return Inventory.fromJson(jsonDecode(res.body));
   }
 }

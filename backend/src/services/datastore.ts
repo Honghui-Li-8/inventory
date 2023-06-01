@@ -214,8 +214,12 @@ export class DataStoreService {
 		user.invitations.splice(index, 1);
 		await this.setUser(user);
 
-		invitation.status = InvitationStatus.DECLINED;
-		await this.setInvitation(invitationId, invitation);
+		await this.datastore.delete(
+			this.datastore.key([
+				"Invitation",
+				this.datastore.int(invitationId),
+			])
+		);
 	}
 	public async acceptInvitation(invitationId: string) {
 		// add user to household, remove invitation from user, and mark invitation as accepted and delete invitation
@@ -230,5 +234,12 @@ export class DataStoreService {
 
 		user.households.push(invitation.household);
 		await this.setUser(user);
+
+		await this.datastore.delete(
+			this.datastore.key([
+				"Invitation",
+				this.datastore.int(invitationId),
+			])
+		);
 	}
 }

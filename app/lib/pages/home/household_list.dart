@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory/models/household.dart';
 import 'package:inventory/pages/home/households_provider.dart';
+import 'package:inventory/pages/households.dart';
 import 'package:inventory/widgets/household_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -35,9 +36,18 @@ class HouseholdList extends StatelessWidget {
         child: ListView.builder(
           itemCount: households.length,
           itemBuilder: (context, index) {
-            return HouseholdTile(
-              household: households[index],
-            );
+            return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HouseholdPage(
+                                household: households[index],
+                              )));
+                },
+                child: HouseholdTile(
+                  household: households[index],
+                ));
           },
         ),
       );

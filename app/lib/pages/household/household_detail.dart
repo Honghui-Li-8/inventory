@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:inventory/models/household.dart';
 import 'package:inventory/models/user.dart';
 import 'package:inventory/pages/add_houshold/add_members.dart';
+import 'package:inventory/pages/household/inventory_detail.dart';
+import 'package:inventory/pages/settings/settings.dart';
 import 'package:inventory/services/api.dart';
 
 class HouseholdPage extends StatefulWidget {
@@ -30,6 +32,19 @@ class _HouseholdPageState extends State<HouseholdPage> {
             ),
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SettingsPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: Column(
         children: [
@@ -39,7 +54,14 @@ class _HouseholdPageState extends State<HouseholdPage> {
               subtitle: const Text('View the inventory'),
               trailing: const Icon(Icons.arrow_forward),
               onTap: () {
-                // Navigator.push(context, );
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => InventoryDetail(
+                      inventoryId: widget.household.inventory,
+                    ),
+                  ),
+                );
               },
             ),
           ),

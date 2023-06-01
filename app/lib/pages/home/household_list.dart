@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:inventory/models/household.dart';
-import 'package:inventory/pages/home/households_provider.dart';
-import 'package:inventory/pages/households.dart';
+import 'package:inventory/pages/home/user_provider.dart';
+import 'package:inventory/services/user.dart';
 import 'package:inventory/widgets/household_tile.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +10,7 @@ class HouseholdList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final HouseholdProvider provider = Provider.of<HouseholdProvider>(context);
+    final UserProvider provider = Provider.of<UserProvider>(context);
     final List<Household>? households = provider.housholds;
 
     if (households == null) {
@@ -22,33 +22,36 @@ class HouseholdList extends StatelessWidget {
         child: CircularProgressIndicator(),
       );
     } else if (households.isEmpty) {
-      return const Center(
-        child: Text('No households found'),
+      return RefreshIndicator(
+        onRefresh: () async {
+          await UserService.instance.refresh();
+        },
+        child: LayoutBuilder(
+          builder: (context, constrains) => SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                minHeight: constrains.maxHeight,
+              ),
+              child: const Center(
+                child: Text('You are not in any households'),
+              ),
+            ),
+          ),
+        ),
       );
     } else {
       return RefreshIndicator(
         onRefresh: () async {
-          await Provider.of<HouseholdProvider>(
-            context,
-            listen: false,
-          ).refresh();
+          await UserService.instance.refresh();
         },
-        child: ListView.builder(
+        child: ListView.separated(
           itemCount: households.length,
-          itemBuilder: (context, index) {
-            return GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => HouseholdPage(
-                                household: households[index],
-                              )));
-                },
-                child: HouseholdTile(
-                  household: households[index],
-                ));
-          },
+          itemBuilder: (_, index) => HouseholdTile(
+            householdId: provider.currentUser!.households[index],
+            household: households[index],
+          ),
+          separatorBuilder: (_, __) => const Divider(),
         ),
       );
     }

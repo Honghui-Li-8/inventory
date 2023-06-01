@@ -1,16 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:inventory/models/household.dart';
+import 'package:inventory/pages/household_detail.dart';
 
 class HouseholdTile extends StatelessWidget {
   final Household household;
+  final String householdId;
 
-  const HouseholdTile({super.key, required this.household});
+  const HouseholdTile(
+      {super.key, required this.household, required this.householdId});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text(household.name),
+      title: Hero(
+        tag: household,
+        child: Material(
+          type: MaterialType.transparency,
+          child: Text(household.name),
+        ),
+      ),
       subtitle: Text(household.owner),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HouseholdPage(
+              household: household,
+              householdId: householdId,
+            ),
+          ),
+        );
+      },
     );
   }
 }

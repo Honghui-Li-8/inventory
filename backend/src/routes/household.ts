@@ -68,13 +68,33 @@ export const inviteToHousehold: Route = {
 };
 
 export const deleteUser: Route = {
-    route: "/deleteUser",
-    method: "delete",
-    async handler(req,res) {
-        const uid = req.body.uid;
-        const hid = req.body.hid;
-        const oid = req.body.oid;
-        await Promise.all([DataStoreService.instance.deleteUser(uid,hid), DataStoreService.instance.deleteHousehold(uid,hid),]);
-        res.status(200).send();
-    }
-}
+	route: "/deleteUser",
+	method: "delete",
+	async handler(req, res) {
+		const uid = req.body.uid;
+		const hid = req.body.hid;
+		const oid = req.body.oid;
+		await Promise.all([
+			DataStoreService.instance.deleteUser(uid, hid),
+			DataStoreService.instance.deleteHousehold(uid, hid),
+		]);
+		res.status(200).send();
+	},
+};
+
+export const setMembers: Route = {
+	route: "/households/:id/updateMembers",
+	method: "post",
+	async handler(req, res) {
+		const householdId = req.params.id;
+		const members: string[] = req.body;
+		const household = await DataStoreService.instance.getHousehold(householdId);
+		household.members = members;
+		try {
+			await DataStoreService.instance.setHousehold(householdId, household);
+			res.status(200).send();
+		} catch (e) {
+			res.status(500).send();
+		}
+	},
+};

@@ -50,3 +50,21 @@ export const userExists: Route = {
 		}
 	},
 };
+
+export const updateUser: Route = {
+	route: "/users/:uid",
+	method: "put",
+	async handler(req, res) {
+		try {
+			const user: User = await DataStoreService.instance.getUser(
+				req.params.uid
+			);
+			const updatedUser: User = { ...user, ...req.body };
+
+			await DataStoreService.instance.setUser(updatedUser);
+			res.status(200).send();
+		} catch (e) {
+			res.status(500).send();
+		}
+	},
+};

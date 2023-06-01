@@ -32,7 +32,7 @@ class UserService extends ChangeNotifier {
 
   Future<void> _init() async {
     String uid = _auth.currentUser!.uid;
-    _currentUser = await APIService.instance.getCurrentUser(uid);
+    _currentUser = await APIService.instance.getUser(uid);
   }
 
   Future<void> loginWithEmailAndPassword(String email, String password) async {
@@ -65,6 +65,11 @@ class UserService extends ChangeNotifier {
 
   Future<void> refresh() async {
     await _init();
+    notifyListeners();
+  }
+
+  void signOut() {
+    _auth.signOut();
     notifyListeners();
   }
 }

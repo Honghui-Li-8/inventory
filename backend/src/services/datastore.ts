@@ -1,5 +1,12 @@
 import { Datastore, PropertyFilter } from "@google-cloud/datastore";
-import { User, Inventory, Item, Household, Invitation } from "../models/types";
+import {
+	User,
+	Inventory,
+	Item,
+	Household,
+	Invitation,
+	InvitationStatus,
+} from "../models/types";
 
 export class DataStoreService {
 	private datastore: Datastore;
@@ -117,7 +124,7 @@ export class DataStoreService {
 				household: householdId,
 				reciever: id,
 				sender: sender,
-				status: "pending",
+				status: InvitationStatus.PENDING,
 			};
 			invitations.push(invitation);
 		}
@@ -125,6 +132,9 @@ export class DataStoreService {
 	}
 
 	public async createInvitations(invitations: Invitation[]): Promise<void> {
+		if (invitations.length == 0) {
+			return;
+		}
 		const household = await this.getHousehold(invitations[0].household);
 
 		for (const invitation of invitations) {
@@ -144,11 +154,23 @@ export class DataStoreService {
 		await this.setHousehold(invitations[0].household, household);
 	}
 
-	private async setUser(user: User): Promise<void> {
+	public async getInvitation(invitationId: string): Promise<Invitation> {
+		const key = this.datastore.key([
+			"Invitation",
+			this.datastore.int(invitationId),
+		]);
+		const [invitation] = await this.datastore.get(key);
+		if (!invitation) {
+			throw Error("Invitation not found");
+		}
+		return invitation as Invitation;
+	}
+
+	public async setUser(user: User): Promise<void> {
 		await this.datastore.save(user);
 	}
 
-	private async setHousehold(id: string, data: Household): Promise<void> {
+	public async setHousehold(id: string, data: Household): Promise<void> {
 		const key = this.datastore.key(["Household", this.datastore.int(id)]);
 		await this.datastore.save(data);
 	}
@@ -166,17 +188,47 @@ export class DataStoreService {
 			return null;
 		}
 	}
-    public async deleteUser (id: string, hid: string): Promise<void> {
-        const a = await this.getUser(id);
-        const index = a.households.indexOf(hid, 0);
-        a.households.splice(index,1);
-        await this.setUser(a);
-    }
-    public async deleteHousehold (id: string, hid: string): Promise<void> {
-        const a = await this.getHousehold(hid);
-        const index = a.members.indexOf(id,0);
-        a.members.splice(index,1);
-        await this.setHousehold(hid,a);
-        
-    }
+	public async deleteUser(id: string, hid: string): Promise<void> {
+		const a = await this.getUser(id);
+		const index = a.households.indexOf(hid, 0);
+		a.households.splice(index, 1);
+		await this.setUser(a);
+	}
+	public async deleteHousehold(id: string, hid: string): Promise<void> {
+		const a = await this.getHousehold(hid);
+		const index = a.members.indexOf(id, 0);
+		a.members.splice(index, 1);
+		await this.setHousehold(hid, a);
+	}
+
+	private async setInvitation(id: string, data: Invitation): Promise<void> {
+		const key = this.datastore.key(["Invitation", this.datastore.int(id)]);
+		await this.datastore.save(data);
+	}
+
+	public async declineInvitation(invitationId: string) {
+		// remove invitation from user, and mark invitation as declined
+		const invitation = await this.getInvitation(invitationId);
+		const user = await this.getUser(invitation.reciever);
+		const index = user.invitations.indexOf(invitationId, 0);
+		user.invitations.splice(index, 1);
+		await this.setUser(user);
+
+		invitation.status = InvitationStatus.DECLINED;
+		await this.setInvitation(invitationId, invitation);
+	}
+	public async acceptInvitation(invitationId: string) {
+		// add user to household, remove invitation from user, and mark invitation as accepted and delete invitation
+		const invitation = await this.getInvitation(invitationId);
+		const user = await this.getUser(invitation.reciever);
+		const index = user.invitations.indexOf(invitationId, 0);
+		user.invitations.splice(index, 1);
+
+		const household = await this.getHousehold(invitation.household);
+		household.members.push(invitation.reciever);
+		await this.setHousehold(invitation.household, household);
+
+		user.households.push(invitation.household);
+		await this.setUser(user);
+	}
 }

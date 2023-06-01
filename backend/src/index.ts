@@ -1,8 +1,13 @@
 import express, { Express } from "express";
 import { routes } from "./routes/route";
+import cors from "cors";
+
+import * as dotenv from "dotenv";
+dotenv.config();
 
 const app: Express = express();
 app.use(express.json());
+app.use(cors());
 const port = 8080;
 
 for (const route of routes) {

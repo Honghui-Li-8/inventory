@@ -58,15 +58,16 @@ class _AddHouseholdPageState extends State<AddHouseholdPage> {
                     builder: (context) => AddMembersPage(
                       householdName: _nameController.text,
                       imageBytes: _imageBytes,
+                      submitLabel: "Create Household & Invite Members",
                     ),
                   ),
                 );
               },
-              child: Row(
+              child: const Row(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text('Add Members'),
-                  Icon(Icons.arrow_forward)
+                  Icon(Icons.arrow_forward),
                 ],
               ),
             ),

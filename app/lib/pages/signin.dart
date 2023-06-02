@@ -109,6 +109,9 @@ class _SignInState extends State<SignIn> {
               width: 260,
               child: FilledButton(
                 onPressed: () async {
+                  if (FocusManager.instance.primaryFocus != null) {
+                    FocusManager.instance.primaryFocus!.unfocus();
+                  }
                   try {
                     await UserService.instance.loginWithEmailAndPassword(
                       _emailController.text,

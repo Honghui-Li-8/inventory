@@ -135,6 +135,10 @@ class _SignupPageState extends State<SignupPage> {
                 width: 250,
                 child: FilledButton(
                   onPressed: () async {
+                    if (FocusManager.instance.primaryFocus != null) {
+                      FocusManager.instance.primaryFocus!.unfocus();
+                    }
+
                     String email = _emailController.text;
                     String password = _passwordController.text;
                     String confirmPassword = _confirmPasswordController.text;

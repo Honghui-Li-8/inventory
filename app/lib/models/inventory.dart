@@ -19,7 +19,7 @@ class Inventory {
 @JsonSerializable()
 class Item {
   final String name;
-  final num quantity;
+  final int quantity;
   final List<String> tags;
 
   const Item({

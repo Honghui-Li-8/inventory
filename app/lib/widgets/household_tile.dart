@@ -16,10 +16,13 @@ class HouseholdTile extends StatelessWidget {
         tag: household,
         child: Material(
           type: MaterialType.transparency,
-          child: Text(household.name),
+          child: Text(
+            household.name,
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
         ),
       ),
-      subtitle: Text(household.owner),
+      trailing: const Icon(Icons.arrow_forward),
       onTap: () {
         Navigator.push(
           context,

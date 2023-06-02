@@ -22,12 +22,11 @@ class InventoryRowInput extends StatelessWidget {
       this.create});
 
   void updateItem() {
-    if (isEmpty) {
+    if (isEmpty && textEditingController.text.isNotEmpty) {
       create!(
         Item(
           name: textEditingController.text,
           quantity: 1,
-          tags: [],
         ),
       );
       return;
@@ -35,7 +34,6 @@ class InventoryRowInput extends StatelessWidget {
     Item nItem = Item(
       name: textEditingController.text,
       quantity: item!.quantity,
-      tags: item!.tags,
     );
     onChange(id, nItem);
   }
@@ -43,10 +41,11 @@ class InventoryRowInput extends StatelessWidget {
   void updateItemQuantity(int quantity) {
     if (isEmpty) {
       create!(
-        const Item(
-          name: "New Item",
+        Item(
+          name: textEditingController.text.isEmpty
+              ? "New Item"
+              : textEditingController.text,
           quantity: 1,
-          tags: [],
         ),
       );
       return;
@@ -54,7 +53,6 @@ class InventoryRowInput extends StatelessWidget {
     Item nItem = Item(
       name: item!.name,
       quantity: quantity,
-      tags: item!.tags,
     );
     onChange(id, nItem);
   }
@@ -66,8 +64,15 @@ class InventoryRowInput extends StatelessWidget {
     }
     return Row(
       children: [
-        SizedBox(
-          width: 200,
+        IconButton(
+          icon: const Icon(Icons.remove_circle),
+          onPressed: item == null
+              ? null
+              : () {
+                  onDelete(id);
+                },
+        ),
+        Expanded(
           child: Focus(
             onFocusChange: (value) {
               if (!value) {
@@ -78,22 +83,14 @@ class InventoryRowInput extends StatelessWidget {
               controller: textEditingController,
               onEditingComplete: updateItem,
               decoration: const InputDecoration(
-                hintText: '   Enter Item',
+                hintText: 'New Item...',
               ),
             ),
           ),
         ),
-        Expanded(child: Container()),
         Counter(
-            value: item == null ? 0 : item!.quantity,
-            onChanged: updateItemQuantity),
-        IconButton(
-          icon: const Icon(Icons.remove_circle),
-          onPressed: item == null
-              ? null
-              : () {
-                  onDelete(id);
-                },
+          value: item == null ? 0 : item!.quantity,
+          onChanged: updateItemQuantity,
         ),
       ],
     );

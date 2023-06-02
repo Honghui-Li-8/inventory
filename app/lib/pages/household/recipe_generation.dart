@@ -12,7 +12,7 @@ class RecipePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Recipe"),
+          title: const Text("Generated Recipes"),
         ),
         body: FutureBuilder<List<Recipe>>(
           future: APIService.instance.generateRecipes(inventory),
@@ -20,13 +20,21 @@ class RecipePage extends StatelessWidget {
             if (snapshot.hasData) {
               List<Recipe> recipes = snapshot.data!;
               return ListView.builder(
-                  itemBuilder: (context, idx) => RecipeCard(
-                        recipe: recipes[idx],
-                      ),
-                  itemCount: recipes.length);
+                itemBuilder: (context, idx) => RecipeCard(
+                  recipe: recipes[idx],
+                ),
+                itemCount: recipes.length,
+              );
             } else {
               return const Center(
-                child: CircularProgressIndicator(),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(height: 16),
+                    Text("Generating recipes..."),
+                  ],
+                ),
               );
             }
           },

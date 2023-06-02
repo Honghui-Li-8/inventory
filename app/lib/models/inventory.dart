@@ -20,12 +20,10 @@ class Inventory {
 class Item {
   final String name;
   final int quantity;
-  final List<String> tags;
 
   const Item({
     required this.name,
     required this.quantity,
-    required this.tags,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

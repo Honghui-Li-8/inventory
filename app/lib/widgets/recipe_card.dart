@@ -7,14 +7,40 @@ class RecipeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Column(
-        children: [
-          Text(recipe.name),
-          Text(recipe.ingredients.toString()),
-          Text(recipe.steps.toString()),
-        ],
-      ),
+    return ExpansionTile(
+      title: Text(recipe.name),
+      expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+      childrenPadding: const EdgeInsets.all(8),
+      children: [
+        const Text("Ingredients:",
+            style: TextStyle(fontWeight: FontWeight.bold)),
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: recipe.ingredients
+                .map(
+                  (e) => Text(
+                    "• $e",
+                  ),
+                )
+                .toList(),
+          ),
+        ),
+        const SizedBox(height: 8),
+        const Text("Steps:", style: TextStyle(fontWeight: FontWeight.bold)),
+        Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: recipe.steps
+                .map(
+                  (e) => Text(e),
+                )
+                .toList(),
+          ),
+        )
+      ],
     );
   }
 }

@@ -1,10 +1,6 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:inventory/models/user.dart';
-import 'package:inventory/pages/util/wait.dart';
-import 'package:inventory/services/api.dart';
 import 'package:inventory/widgets/common/circle_image_picker.dart';
 
 class HouseholdImageSettingsPage extends StatefulWidget {

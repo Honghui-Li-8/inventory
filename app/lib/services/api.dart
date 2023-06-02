@@ -6,15 +6,16 @@ import 'package:http/http.dart';
 import 'package:inventory/models/household.dart';
 import 'package:inventory/models/inventory.dart';
 import 'package:inventory/models/invitation.dart';
+import 'package:inventory/models/recipe.dart';
 import 'package:inventory/models/user.dart';
 import 'package:inventory/services/firebase.dart';
 import 'package:inventory/services/user.dart';
 
 class APIService {
-  static const bool _testing = true;
+  static const bool _testing = false;
   static const String _baseUrl = _testing
       // ? 'http://168.150.111.230:8080'
-      ? "https://9a15-168-150-41-234.ngrok-free.app"
+      ? "https://8a7a-168-150-10-191.ngrok-free.app"
       // ? 'http://168.150.60.67:8080'
       : 'https://inventory-paradise.wl.r.appspot.com';
   static APIService? _instance;
@@ -247,7 +248,31 @@ class APIService {
   Future<Inventory> getInventory(String inventoryId) async {
     String url = '$_baseUrl/inventory/$inventoryId';
     Response res = await get(Uri.parse(url));
-    print(res.body);
     return Inventory.fromJson(jsonDecode(res.body));
+  }
+
+  Future<void> syncInventory(String inventoryId, List<Item> items) async {
+    String url = '$_baseUrl/inventory/$inventoryId/items';
+    await put(
+      Uri.parse(url),
+      body: jsonEncode(items),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+  }
+
+  Future<List<Recipe>> generateRecipes(List<Item> items) async {
+    String url = '$_baseUrl/generate_recipes';
+    List<String> itemNames = items.map((e) => e.name).toList();
+    Response res = await post(
+      Uri.parse(url),
+      body: jsonEncode(itemNames),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    List<dynamic> json = jsonDecode(res.body);
+    return json.map((e) => Recipe.fromJson(e)).toList();
   }
 }

@@ -19,13 +19,11 @@ class Inventory {
 @JsonSerializable()
 class Item {
   final String name;
-  final num quantity;
-  final List<String> tags;
+  final int quantity;
 
   const Item({
     required this.name,
     required this.quantity,
-    required this.tags,
   });
 
   factory Item.fromJson(Map<String, dynamic> json) => _$ItemFromJson(json);

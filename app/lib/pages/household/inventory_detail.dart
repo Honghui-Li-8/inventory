@@ -1,29 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:inventory/models/inventory.dart';
-import 'package:inventory/services/api.dart';
+import 'package:inventory/widgets/inventory_list.dart';
 
-class InventoryDetail extends StatefulWidget {
+class InventoryDetail extends StatelessWidget {
   final String inventoryId;
 
   const InventoryDetail({super.key, required this.inventoryId});
-
-  @override
-  State<InventoryDetail> createState() => _InventoryDetailState();
-}
-
-class _InventoryDetailState extends State<InventoryDetail> {
-  Future<void> _load() async {
-    Inventory inventory = await APIService.instance.getInventory(
-      widget.inventoryId,
-    );
-    print(inventory.items);
-  }
-
-  @override
-  void initState() {
-    _load();
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +12,11 @@ class _InventoryDetailState extends State<InventoryDetail> {
       appBar: AppBar(
         title: const Text('Inventory'),
       ),
-      body: Column(
-        children: [
-          Text(widget.inventoryId),
-        ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: InventoryList(
+          inventoryId: inventoryId,
+        ),
       ),
     );
   }

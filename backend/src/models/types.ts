@@ -16,7 +16,6 @@ export interface Inventory {
 export interface Item {
 	name: string;
 	quantity: number;
-	tags: string[];
 }
 
 export interface Household {
